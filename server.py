@@ -4,6 +4,7 @@ server.py
 Server side of a one-way encrypted communication system.
 - Uses RSA to securely receive a Fernet session key from client.
 - Then uses that Fernet key to decrypt all further messages.
+- Additionally, saves received messages into a log file.
 """
 
 import socket
@@ -14,11 +15,9 @@ from cryptography.fernet import Fernet
 # -----------------------------
 # 1) Generate RSA key pair
 # -----------------------------
-# Server makes a public/private RSA keypair at runtime
 rsa_private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 rsa_public_key = rsa_private_key.public_key()
 
-# Serialize public key to bytes (PEM format) to send to client
 rsa_public_pem = rsa_public_key.public_bytes(
     encoding=serialization.Encoding.PEM,
     format=serialization.PublicFormat.SubjectPublicKeyInfo,
@@ -63,20 +62,30 @@ print("[*] Fernet session key established.")
 # -----------------------------
 # 5) Receive encrypted messages (one way)
 # -----------------------------
-try:
-    while True:
-        data = conn.recv(4096)
-        if not data:
-            break
+log_file = "received_messages.txt"
 
-        try:
-            message = fernet.decrypt(data).decode()
-            print("Client:", message)
-        except Exception as e:
-            print("[!] Decryption failed:", e)
+try:
+    with open(log_file, "a", encoding="utf-8") as f:  # open log file in append mode
+        while True:
+            data = conn.recv(4096)
+            if not data:
+                break
+
+            try:
+                message = fernet.decrypt(data).decode()
+                print("Client:", message)
+
+                # Save the message into the file
+                f.write(message + "\n")
+                f.flush()  # make sure it's written immediately
+
+            except Exception as e:
+                print("[!] Decryption failed:", e)
 
 except KeyboardInterrupt:
     print("\n[*] Stopped by user.")
 finally:
     conn.close()
     server.close()
+    print(f"[*] All messages saved in {log_file}")
+
