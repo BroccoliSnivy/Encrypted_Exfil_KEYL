@@ -1,4 +1,4 @@
-# 🔐 Keyl Enc — Encrypted Communication System
+# 🔐 STEALTH KEYLOGGER
 
 A compact Python project that demonstrates a **one-way encrypted communication channel** using **RSA** (for key exchange) and **Fernet** (for symmetric encryption).  
 Includes a server with a Rich-powered terminal UI (banner, instructions, live tables, build output) and tools to build a standalone client executable.
