@@ -25,10 +25,8 @@ import sys
 # -----------------------------
 HOST = "127.0.0.1"  # Change this to the IP of your other machine, e.g., "192.168.1.100"
 PORT = 5000
-
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((HOST, PORT))
-# print("[*] Connected to server.")  # Commented for silent background execution
 
 # -----------------------------
 # 2) Receive RSA public key from server
