@@ -174,17 +174,6 @@ By using this code you confirm you will only deploy it on systems you own or hav
 
 ---
 
-## Contributing
-
-Pull requests welcome. Suggested improvements:
-
-* Two-way encrypted chat (full duplex).
-* File transfer support with chunking and progress bars.
-* Dockerfile to standardize build environment.
-* Tests for message framing and edge cases.
-
----
-
 
 ## Example quick commands
 
